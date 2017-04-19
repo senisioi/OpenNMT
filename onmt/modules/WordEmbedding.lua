@@ -24,6 +24,8 @@ function WordEmbedding:postParametersInitialization()
   -- If embeddings are given. Initialize them.
   if self.preTrained and self.preTrained:len() > 0 then
     local vecs = torch.load(self.preTrained)
+    _G.logger:info ("Network size: " .. self.net.weight:size(1) .. 'x' .. self.net.weight:size(2))
+    _G.logger:info ('Pre-trained embeddings size: '.. vecs:size(1) .. 'x' .. vecs:size(2))
     self.net.weight:copy(vecs)
   end
 

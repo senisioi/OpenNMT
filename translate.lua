@@ -67,6 +67,11 @@ local function main()
   end
 
   local outFile = io.open(opt.output, 'w')
+  for n = 1, translator.nBest do
+    local hypothOutFile = io.open(opt.output .. '_h' .. n, 'w')
+    hypothOutFile:write("")
+    hypothOutFile:close()
+  end
 
   local sentId = 1
   local batchId = 1
@@ -135,8 +140,13 @@ local function main()
           else
             for n = 1, #results[b].preds do
               local sentence = translator:buildOutput(results[b].preds[n])
-              outFile:write(sentence .. '\n')
+              --    outFile:write(sentence .. '\n')
+              local hypothOutFile = io.open(opt.output .. '_h' .. n, 'a')
+              hypothOutFile:write(sentence .. '\n')
+              hypothOutFile:close()
+              -- outFile:write(sentence .. '\n')
               if n == 1 then
+                outFile:write(sentence .. '\n')             
                 predScoreTotal = predScoreTotal + results[b].preds[n].score
                 predWordsTotal = predWordsTotal + #results[b].preds[n].words
 

@@ -91,6 +91,13 @@ function Translator:__init(args)
 
   self.dicts = self.checkpoint.dicts
 
+  self.nBest = self.opt.n_best or 1
+  self.beamSize = self.opt.beam_size or 1
+  if self.nBest > self.beamSize then
+    _G.logger:info('N-best too large. Setting n-best to beam size max \'' .. self.beamSize .. '\'...')
+    self.nBest = self.beamSize
+  end 
+
   if self.args.phrase_table:len() > 0 then
     self.phraseTable = onmt.translate.PhraseTable.new(self.args.phrase_table)
   end
